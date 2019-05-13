@@ -7,18 +7,22 @@ const ResultView = function () {
 ResultView.prototype.bindEvents = function () {
     PubSub.subscribe('PrimeChecker:result-calculated', (event) => {
         const isPrimeOrNot = event.detail;
-        this.displayResult(isPrimeOrNot, event.detail);
+        this.displayResult(isPrimeOrNot);
     })
 };
 
-ResultView.prototype.displayResult = function (boolean, number) {
+ResultView.prototype.displayResult = function (boolean) {
     const result = document.querySelector('#result');
-    if (boolean === false) {
-        result.textContent = `${number} is NOT a prime number.`
-    }
-    else {
-        result.textContent = `${number} IS a prime number.`
-    };
+    PubSub.subscribe('InputView:number-submitted', (event) => {
+        if (boolean === true) {
+            result.textContent = `${event.detail} IS a prime number.`
+        }
+        else {
+            result.textContent = `${event.detail} is NOT a prime number.`
+        }
+       
+    })
+    
 }
 
 module.exports = ResultView;
